@@ -14,18 +14,21 @@ def get_location(request):
 		longitude = request.POST['longitude']
 		if Question.objects.filter(latitude=latitude,longitude=longitude,\
 			).exists():
+			print "one"
 			location = Question.objects.filter(latitude=latitude,longitude=longitude)\
 						.first()
 			if location.date_added.date() != now.date():
+				print "two"
 				query = latitude+','+longitude
 				location = geolocator.reverse(query)
 				p = Question(latitude=latitude,longitude=latitude,address=location.address,\
 					date_added=now)
 				p.save()
 		else:
+			print "three"
 			query = latitude+','+longitude
 			location = geolocator.reverse(query)
-			p = Question(latitude=latitude,longitude=latitude,address=location.address,\
+			p = Question(latitude=latitude,longitude=longitude,address=location.address,\
 				date_added=now)
 			p.save()
 		context = {
